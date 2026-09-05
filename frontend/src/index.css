@@ -379,6 +379,21 @@ h1, h2, h3, h4, .font-heading {
   }
 }
 
+/* Header-scoped collapse: the full desktop header (brand + 7-item nav +
+   5 action controls) needs a very wide row and overflows narrower desktops
+   like ~1086px. Below 1400px, swap the header to its existing compact
+   control (which opens the full-featured dropdown) so it never overflows.
+   Scoped to `header` so the shared hero/footer .desktop-only/.mobile-only
+   elements are left untouched. */
+@media (max-width: 1399px) {
+  header .desktop-only {
+    display: none !important;
+  }
+  header .mobile-only {
+    display: flex !important;
+  }
+}
+
 /* Mobile ≤ 768px: Full responsive overhaul */
 @media (max-width: 768px) {
   /* Show/Hide toggles */
