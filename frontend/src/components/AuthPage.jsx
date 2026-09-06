@@ -55,7 +55,11 @@ const ILLUSTRATION_SLIDES = [
 const RING_CIRCUMFERENCE = 2 * Math.PI * 16;
 
 // Hand-built SVG meditation figure (kept static across slide changes)
+// Faithfully matches the reference: doodle-icon arc over the head, long
+// flowing hair, green heart tee, and arms extended outward in a mudra pose.
 function MeditationArt() {
+  const line = '#2f9e6a';
+  const doodle = '#4aa877';
   return (
     <svg
       className="meditation-svg"
@@ -63,93 +67,128 @@ function MeditationArt() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Illustration of a person meditating"
+      aria-label="Illustration of a person meditating surrounded by idea icons"
     >
-      {/* Aura rings */}
-      <g fill="none" stroke="#8ed3a6" strokeWidth="2" strokeLinecap="round">
-        <path className="aura-loop-path" d="M118 96 Q200 26 282 96" opacity="0.55" />
-        <path className="aura-loop-path" d="M96 126 Q200 34 304 126" opacity="0.3" />
+      {/* ---- Doodle icon arc above the head ---- */}
+      <g stroke={doodle} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        {/* Lightbulb (center top) */}
+        <path d="M200 24 a13 13 0 0 1 8 23 q-1 3 -1 5 h-14 q0 -2 -1 -5 a13 13 0 0 1 8 -23 Z" />
+        <path d="M194 57 h12 M196 61 h8" />
+        <path d="M200 12 v6 M180 20 l4 4 M220 20 l-4 4" opacity="0.8" />
+
+        {/* Left side icons */}
+        {/* magnifying glass */}
+        <circle cx="96" cy="112" r="9" />
+        <path d="M103 119 l8 8" />
+        {/* leaf */}
+        <path d="M74 150 q14 -14 26 -4 q-2 16 -18 18 q-10 -4 -8 -14 Z" />
+        <path d="M80 160 q10 -6 16 -12" />
+        {/* spiral swirl */}
+        <path d="M120 74 q10 -8 14 2 q3 8 -6 9 q-6 0 -5 -6 q1 -4 5 -2" />
+        {/* small star */}
+        <path d="M150 100 l0 10 M145 105 l10 0" />
+
+        {/* Right side icons */}
+        {/* gear / flower dot */}
+        <circle cx="304" cy="112" r="9" />
+        <path d="M304 99 v-5 M304 130 v-5 M291 112 h-5 M322 112 h-5" />
+        {/* spiral swirl */}
+        <path d="M280 74 q-10 -8 -14 2 q-3 8 6 9 q6 0 5 -6 q-1 -4 -5 -2" />
+        {/* leaf right */}
+        <path d="M326 150 q-14 -14 -26 -4 q2 16 18 18 q10 -4 8 -14 Z" />
+        {/* small star */}
+        <path d="M250 100 l0 10 M245 105 l10 0" />
       </g>
 
-      {/* Doodles floating around the head */}
-      <g stroke="#3f9e6a" strokeWidth="2" strokeLinecap="round" fill="none">
-        <circle cx="200" cy="42" r="9" fill="#eafaf0" />
-        <path d="M196 52 h8 M197 56 h6" />
-        <path d="M150 55 l0 8 M146 59 l8 0" opacity="0.85" />
-        <path d="M252 58 l0 8 M248 62 l8 0" opacity="0.85" />
-        <path d="M110 68 q6 -6 12 0" opacity="0.6" />
-        <path d="M286 66 q6 -6 12 0" opacity="0.6" />
-      </g>
-      <g stroke="none">
-        <circle cx="130" cy="86" r="3" fill="#8ed3a6" />
-        <circle cx="272" cy="82" r="3.5" fill="#8ed3a6" />
-        <circle cx="168" cy="38" r="2.5" fill="#b7e4c7" />
-        <circle cx="236" cy="36" r="2.5" fill="#b7e4c7" />
+      {/* sparkle dots */}
+      <g fill="#8ed3a6">
+        <circle cx="132" cy="120" r="2.5" />
+        <circle cx="170" cy="70" r="2.5" />
+        <circle cx="230" cy="70" r="2.5" />
+        <circle cx="268" cy="120" r="2.5" />
+        <circle cx="112" cy="86" r="2" />
+        <circle cx="288" cy="86" r="2" />
       </g>
 
-      {/* Mat shadow */}
-      <ellipse cx="200" cy="336" rx="118" ry="16" fill="#d7ede0" />
+      {/* ---- Mat ---- */}
+      <ellipse cx="200" cy="338" rx="120" ry="15" fill="#c4dccf" />
+      <path d="M96 336 Q200 356 304 336" stroke={line} strokeWidth="2.5" fill="none" strokeLinecap="round" opacity="0.6" />
 
-      {/* Crossed legs */}
+      {/* ---- Crossed legs ---- */}
       <path
-        d="M132 322 Q120 292 150 286 L250 286 Q280 292 268 322 Q234 336 200 336 Q166 336 132 322 Z"
+        d="M128 326 Q112 292 148 284 L252 284 Q288 292 272 326 Q236 340 200 340 Q164 340 128 326 Z"
         fill="#cbe8d7"
-        stroke="#2f9e6a"
+        stroke={line}
         strokeWidth="3"
         strokeLinejoin="round"
       />
-      <path d="M150 300 Q200 288 250 300" stroke="#2f9e6a" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M150 302 Q200 290 250 302" stroke={line} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* feet tucked */}
+      <path d="M182 292 q18 -8 36 0" stroke={line} strokeWidth="2.5" fill="none" strokeLinecap="round" />
 
-      {/* Arms reaching to the knees (mudra pose) */}
-      <path d="M168 236 Q126 250 140 292" stroke="#2f9e6a" strokeWidth="3" fill="none" strokeLinecap="round" />
-      <path d="M232 236 Q274 250 260 292" stroke="#2f9e6a" strokeWidth="3" fill="none" strokeLinecap="round" />
+      {/* ---- Arms extended out to the knees (drawn behind torso) ---- */}
+      <path d="M170 244 Q116 250 118 300" stroke={line} strokeWidth="3" fill="#cbe8d7" strokeLinejoin="round" />
+      <path d="M230 244 Q284 250 282 300" stroke={line} strokeWidth="3" fill="#cbe8d7" strokeLinejoin="round" />
 
-      {/* Torso / shirt */}
+      {/* ---- Torso / shirt ---- */}
       <path
-        d="M162 300 Q158 224 200 214 Q242 224 238 300 Z"
+        d="M164 304 Q160 232 200 220 Q240 232 236 304 Q200 314 164 304 Z"
         fill="#86d3a6"
-        stroke="#2f9e6a"
+        stroke={line}
         strokeWidth="3"
         strokeLinejoin="round"
       />
+      {/* sleeves */}
+      <path d="M170 244 q-14 6 -16 22 q14 6 24 -2 Z" fill="#86d3a6" stroke={line} strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M230 244 q14 6 16 22 q-14 6 -24 -2 Z" fill="#86d3a6" stroke={line} strokeWidth="2.5" strokeLinejoin="round" />
 
       {/* Heart on the chest */}
       <path
-        d="M200 268 c-4 -8 -16 -6 -16 3 c0 7 10 13 16 17 c6 -4 16 -10 16 -17 c0 -9 -12 -11 -16 -3 Z"
-        fill="#ffffff"
-        stroke="#2f9e6a"
-        strokeWidth="2.5"
+        d="M200 266 c-4 -8 -17 -6 -17 4 c0 8 11 14 17 18 c6 -4 17 -10 17 -18 c0 -10 -13 -12 -17 -4 Z"
+        fill="none"
+        stroke="#ffffff"
+        strokeWidth="3"
         strokeLinejoin="round"
       />
 
-      {/* Hands resting on knees */}
-      <circle cx="140" cy="294" r="9" fill="#f3cbb0" stroke="#2f9e6a" strokeWidth="2.5" />
-      <circle cx="260" cy="294" r="9" fill="#f3cbb0" stroke="#2f9e6a" strokeWidth="2.5" />
+      {/* ---- Mudra hands on the knees ---- */}
+      <g fill="#f3cbb0" stroke={line} strokeWidth="2.5" strokeLinejoin="round">
+        <path d="M118 300 q-4 -12 8 -14 q12 0 12 10 q0 8 -8 9 q-8 1 -12 -5 Z" />
+        <path d="M282 300 q4 -12 -8 -14 q-12 0 -12 10 q0 8 8 9 q8 1 12 -5 Z" />
+      </g>
+      <path d="M120 292 q4 -3 8 0 M280 292 q-4 -3 -8 0" stroke={line} strokeWidth="1.5" fill="none" strokeLinecap="round" />
 
-      {/* Neck */}
-      <path d="M190 196 h20 v14 q-10 8 -20 0 Z" fill="#f3cbb0" stroke="#2f9e6a" strokeWidth="2" />
+      {/* ---- Neck ---- */}
+      <path d="M191 200 h18 v14 q-9 7 -18 0 Z" fill="#f3cbb0" stroke={line} strokeWidth="2" strokeLinejoin="round" />
 
-      {/* Hair (back) */}
+      {/* ---- Hair behind (long, flowing past shoulders) ---- */}
       <path
-        d="M158 150 Q150 96 200 92 Q250 96 242 150 Q246 190 232 196 L232 168 Q232 128 200 126 Q168 128 168 168 L168 196 Q154 190 158 150 Z"
-        fill="#6b4a34"
+        d="M162 150 Q150 92 200 88 Q250 92 238 150 Q248 210 232 236 Q228 210 228 176 Q228 138 200 136 Q172 138 172 176 Q172 210 168 236 Q152 210 162 150 Z"
+        fill="#5c4433"
       />
 
-      {/* Head */}
-      <circle cx="200" cy="140" r="30" fill="#f3cbb0" stroke="#2f9e6a" strokeWidth="2" />
+      {/* ---- Head ---- */}
+      <circle cx="200" cy="146" r="30" fill="#f3cbb0" stroke={line} strokeWidth="2" />
 
-      {/* Hair (top) */}
-      <path d="M172 132 Q176 104 200 104 Q224 104 228 132 Q214 120 200 120 Q186 120 172 132 Z" fill="#6b4a34" />
+      {/* ---- Hair top / fringe (center part) ---- */}
+      <path
+        d="M170 140 Q168 104 200 102 Q232 104 230 140 Q224 122 200 122 Q176 122 170 140 Z"
+        fill="#5c4433"
+      />
+      <path d="M200 102 q0 12 0 20" stroke="#4a3628" strokeWidth="1.5" fill="none" opacity="0.5" />
 
       {/* Closed eyes + gentle smile */}
       <path
-        d="M184 140 q5 5 10 0 M206 140 q5 5 10 0"
-        stroke="#2f9e6a"
+        d="M184 146 q5 5 10 0 M206 146 q5 5 10 0"
+        stroke={line}
         strokeWidth="2"
         fill="none"
         strokeLinecap="round"
       />
-      <path d="M193 152 q7 6 14 0" stroke="#2f9e6a" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M193 158 q7 6 14 0" stroke={line} strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* cheeks */}
+      <circle cx="180" cy="154" r="3.5" fill="#f3b6a0" opacity="0.6" />
+      <circle cx="220" cy="154" r="3.5" fill="#f3b6a0" opacity="0.6" />
     </svg>
   );
 }
