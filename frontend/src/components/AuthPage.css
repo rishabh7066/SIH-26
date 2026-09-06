@@ -442,6 +442,14 @@
   max-width: 580px;
 }
 
+.auth-illustration-image {
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
 .auth-illustration-card {
   background: #eef7f2;
   border-radius: 36px;

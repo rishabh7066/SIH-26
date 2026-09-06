@@ -10,7 +10,6 @@ import {
   User, 
   X 
 } from 'lucide-react';
-import AuthIllustration from './AuthIllustration';
 import './AuthPage.css';
 
 export default function AuthPage({ 
@@ -383,7 +382,11 @@ export default function AuthPage({
 
         {/* Right Column: Illustration Art matching screenshot */}
         <section className="auth-illustration-column">
-          <AuthIllustration />
+          <img
+            src="/auth-illustration.png"
+            alt="Discover the right business opportunities in your village with GramVenture"
+            className="auth-illustration-image"
+          />
         </section>
 
       </main>
