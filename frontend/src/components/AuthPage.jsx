@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Eye, 
   EyeOff, 
@@ -11,6 +11,148 @@ import {
   X 
 } from 'lucide-react';
 import './AuthPage.css';
+
+// Rotating context shown under the (static) meditation figure
+const ILLUSTRATION_SLIDES = [
+  {
+    title: 'Business Roadmap',
+    meta: '14 Task',
+    percent: 92,
+    tag: 'Business',
+    headline: (
+      <>Discover the right business opportunities in your village with <strong>GramVenture</strong></>
+    ),
+  },
+  {
+    title: 'Skill Training',
+    meta: '8 Modules',
+    percent: 76,
+    tag: 'Learning',
+    headline: (
+      <>Learn practical skills and grow your income with expert <strong>guidance</strong></>
+    ),
+  },
+  {
+    title: 'Market Access',
+    meta: '22 Buyers',
+    percent: 68,
+    tag: 'Trade',
+    headline: (
+      <>Sell your produce directly to buyers and earn <strong>fair prices</strong></>
+    ),
+  },
+  {
+    title: 'Micro Finance',
+    meta: '5 Schemes',
+    percent: 84,
+    tag: 'Funding',
+    headline: (
+      <>Access loans and schemes to fund your next <strong>venture</strong></>
+    ),
+  },
+];
+
+const RING_CIRCUMFERENCE = 2 * Math.PI * 16;
+
+// Hand-built SVG meditation figure (kept static across slide changes)
+function MeditationArt() {
+  return (
+    <svg
+      className="meditation-svg"
+      viewBox="0 0 400 380"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Illustration of a person meditating"
+    >
+      {/* Aura rings */}
+      <g fill="none" stroke="#8ed3a6" strokeWidth="2" strokeLinecap="round">
+        <path className="aura-loop-path" d="M118 96 Q200 26 282 96" opacity="0.55" />
+        <path className="aura-loop-path" d="M96 126 Q200 34 304 126" opacity="0.3" />
+      </g>
+
+      {/* Doodles floating around the head */}
+      <g stroke="#3f9e6a" strokeWidth="2" strokeLinecap="round" fill="none">
+        <circle cx="200" cy="42" r="9" fill="#eafaf0" />
+        <path d="M196 52 h8 M197 56 h6" />
+        <path d="M150 55 l0 8 M146 59 l8 0" opacity="0.85" />
+        <path d="M252 58 l0 8 M248 62 l8 0" opacity="0.85" />
+        <path d="M110 68 q6 -6 12 0" opacity="0.6" />
+        <path d="M286 66 q6 -6 12 0" opacity="0.6" />
+      </g>
+      <g stroke="none">
+        <circle cx="130" cy="86" r="3" fill="#8ed3a6" />
+        <circle cx="272" cy="82" r="3.5" fill="#8ed3a6" />
+        <circle cx="168" cy="38" r="2.5" fill="#b7e4c7" />
+        <circle cx="236" cy="36" r="2.5" fill="#b7e4c7" />
+      </g>
+
+      {/* Mat shadow */}
+      <ellipse cx="200" cy="336" rx="118" ry="16" fill="#d7ede0" />
+
+      {/* Crossed legs */}
+      <path
+        d="M132 322 Q120 292 150 286 L250 286 Q280 292 268 322 Q234 336 200 336 Q166 336 132 322 Z"
+        fill="#cbe8d7"
+        stroke="#2f9e6a"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+      <path d="M150 300 Q200 288 250 300" stroke="#2f9e6a" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+
+      {/* Arms reaching to the knees (mudra pose) */}
+      <path d="M168 236 Q126 250 140 292" stroke="#2f9e6a" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M232 236 Q274 250 260 292" stroke="#2f9e6a" strokeWidth="3" fill="none" strokeLinecap="round" />
+
+      {/* Torso / shirt */}
+      <path
+        d="M162 300 Q158 224 200 214 Q242 224 238 300 Z"
+        fill="#86d3a6"
+        stroke="#2f9e6a"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+
+      {/* Heart on the chest */}
+      <path
+        d="M200 268 c-4 -8 -16 -6 -16 3 c0 7 10 13 16 17 c6 -4 16 -10 16 -17 c0 -9 -12 -11 -16 -3 Z"
+        fill="#ffffff"
+        stroke="#2f9e6a"
+        strokeWidth="2.5"
+        strokeLinejoin="round"
+      />
+
+      {/* Hands resting on knees */}
+      <circle cx="140" cy="294" r="9" fill="#f3cbb0" stroke="#2f9e6a" strokeWidth="2.5" />
+      <circle cx="260" cy="294" r="9" fill="#f3cbb0" stroke="#2f9e6a" strokeWidth="2.5" />
+
+      {/* Neck */}
+      <path d="M190 196 h20 v14 q-10 8 -20 0 Z" fill="#f3cbb0" stroke="#2f9e6a" strokeWidth="2" />
+
+      {/* Hair (back) */}
+      <path
+        d="M158 150 Q150 96 200 92 Q250 96 242 150 Q246 190 232 196 L232 168 Q232 128 200 126 Q168 128 168 168 L168 196 Q154 190 158 150 Z"
+        fill="#6b4a34"
+      />
+
+      {/* Head */}
+      <circle cx="200" cy="140" r="30" fill="#f3cbb0" stroke="#2f9e6a" strokeWidth="2" />
+
+      {/* Hair (top) */}
+      <path d="M172 132 Q176 104 200 104 Q224 104 228 132 Q214 120 200 120 Q186 120 172 132 Z" fill="#6b4a34" />
+
+      {/* Closed eyes + gentle smile */}
+      <path
+        d="M184 140 q5 5 10 0 M206 140 q5 5 10 0"
+        stroke="#2f9e6a"
+        strokeWidth="2"
+        fill="none"
+        strokeLinecap="round"
+      />
+      <path d="M193 152 q7 6 14 0" stroke="#2f9e6a" strokeWidth="2" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 export default function AuthPage({ 
   initialMode = 'login', 
@@ -25,6 +167,23 @@ export default function AuthPage({
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotSent, setForgotSent] = useState(false);
+
+  // Rotating illustration context (girl stays static, card + headline change)
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [isSlideFading, setIsSlideFading] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsSlideFading(true);
+      setTimeout(() => {
+        setSlideIndex(prev => (prev + 1) % ILLUSTRATION_SLIDES.length);
+        setIsSlideFading(false);
+      }, 320);
+    }, 3200);
+    return () => clearInterval(interval);
+  }, []);
+
+  const slide = ILLUSTRATION_SLIDES[slideIndex];
 
   // Form State
   const [formData, setFormData] = useState({
@@ -382,11 +541,63 @@ export default function AuthPage({
 
         {/* Right Column: Illustration Art matching screenshot */}
         <section className="auth-illustration-column">
-          <img
-            src="/auth-illustration.png"
-            alt="Discover the right business opportunities in your village with GramVenture"
-            className="auth-illustration-image"
-          />
+          <div className="auth-illustration-card">
+            <div className="auth-illustration-art-wrap">
+              <div className="central-meditation-art">
+                <MeditationArt />
+              </div>
+
+              {/* Floating progress card - content rotates */}
+              <div className={`floating-task-card ${isSlideFading ? 'sliding-transparent' : ''}`}>
+                <div className="task-card-header">
+                  <div className="task-text-group">
+                    <p className="task-title">{slide.title}</p>
+                    <span className="task-subtitle">{slide.meta}</span>
+                  </div>
+                  <div className="task-progress-ring">
+                    <svg className="ring-svg" viewBox="0 0 40 40">
+                      <circle cx="20" cy="20" r="16" fill="none" stroke="#e2e8f0" strokeWidth="4" />
+                      <circle
+                        className="progress-arc"
+                        cx="20"
+                        cy="20"
+                        r="16"
+                        fill="none"
+                        stroke="#15803d"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        strokeDasharray={RING_CIRCUMFERENCE}
+                        strokeDashoffset={RING_CIRCUMFERENCE * (1 - slide.percent / 100)}
+                        transform="rotate(-90 20 20)"
+                      />
+                    </svg>
+                    <span className="ring-percentage">{slide.percent}%</span>
+                  </div>
+                </div>
+                <div className="task-card-footer">
+                  <span className="task-tag-badge">{slide.tag}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Carousel dots */}
+            <div className="carousel-dots-row">
+              {ILLUSTRATION_SLIDES.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={`carousel-dot ${i === slideIndex ? 'active' : ''}`}
+                  onClick={() => setSlideIndex(i)}
+                  aria-label={`Show slide ${i + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Rotating headline */}
+            <div className={`auth-illustration-footer ${isSlideFading ? 'sliding-transparent' : ''}`}>
+              <p className="auth-footer-headline">{slide.headline}</p>
+            </div>
+          </div>
         </section>
 
       </main>
